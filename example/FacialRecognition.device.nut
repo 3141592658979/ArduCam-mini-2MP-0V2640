@@ -6,15 +6,11 @@ function calcImageDifferences(img1, img2) {
     local pixelDiff = 0;
     local buf1 = [0, 0, 0];
     local buf2 = [0, 0 ,0];
-    local totGreen = 0;
-    local totBlue = 0;
-    local totRed = 0;
     local len = 153604; // byte length of rgb qvga
     for(local i = 4; i < len; i+= len/128) {
             buf1[0] = ((img1[i] & 0xf8) >> 3);
             buf1[1] = ((img1[i] & 0x07) << 3) + ((img1[i +1] & 0xe0) >> 5);
             buf1[2] = img1[i +1] & 0x1f;
-            
             
             buf2[0] = ((img2[i] & 0xf8) >> 3);
             buf2[1] = ((img2[i] & 0x07) << 3) + ((img2[i +1] & 0xe0) >> 5);

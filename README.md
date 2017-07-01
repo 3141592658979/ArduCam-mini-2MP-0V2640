@@ -121,4 +121,4 @@ myCamera.setExposure(0xffff);
 ```
 
 # License
-The ArduCAM library is licensed under the (MIT License)[https://github.com/electricimp/0v2640/blob/develop/LICENSE]
+The ArduCAM library is licensed under the (MIT License)[https://github.com/electricimp/ArduCam_0v2640/blob/develop/LICENSE]

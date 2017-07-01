@@ -16,12 +16,15 @@ agentCam <- Camera(processImage);
 ### Class Methods
 
 ### init()
-Init must be called to initialize callback functions for receiving jpeg images. 
+The init() method must be called to initialize callback functions for receiving jpeg images. 
 
 #### Example
 ```
 agentCam.init();
 ```
+
+### setCallBack(cb)
+The setCallBack(cb) method changes the callback called when a jpeg is received from the device.
 
 ## Class Usage - Device
 

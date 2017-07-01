@@ -155,10 +155,10 @@ class Camera {
      * Constructor takes in a pre-configured I2C interface and SPI interface, and resets the camera
      *
      *************************************************************************/
-    constructor(_spi, _cs_l, _i2c) {
-        _spi = _spi;
-        _cs_l = _cs_l;
-        _i2c = _i2c;
+    constructor(spi, cs_l, i2c) {
+        _spi = spi;
+        _cs_l = cs_l;
+        _i2c = i2c;
         // the imp's SPI interface does not implicitly include a CS pin
         // configure a GPIO to use as the chip select (active low)
         _cs_l.configure(DIGITAL_OUT);
@@ -216,7 +216,7 @@ class Camera {
     }
 
     function _write_sensor_reg(address, value) {
-        local _i2c_err = _i2c.write(0x60, address.tochar() + value.tochar());
+        local i2c_err = _i2c.write(0x60, address.tochar() + value.tochar());
         if (i2c_err) {
             throw("i2c error:" + _i2c_err);
         }
@@ -280,12 +280,12 @@ class Camera {
         };
     }
     
-    function send_chunk() {
+    function _send_chunk() {
         agent.send("jpeg_chunk", [chunk_next*CHUNK_SIZE, _spi.readblob(CHUNK_SIZE)]);
 
         // All done?
         chunk_next++;
-        if (chunk_next < chunk_count) imp.wakeup(0, send_chunk.bindenv(this));
+        if (chunk_next < chunk_count) imp.wakeup(0, _send_chunk.bindenv(this));
         else {
             _cs_l.write(1); 
             agent.send("jpeg_end", 1);
@@ -307,7 +307,7 @@ class Camera {
         // As buffer can be big, we do the sending on imp.wakeup(0) to allow
         // incoming messages to be processed
         chunk_next = 0;
-        imp.wakeup(0, send_chunk.bindenv(this));
+        imp.wakeup(0, _send_chunk.bindenv(this));
     }
     
     function set_jpeg_size(size) {

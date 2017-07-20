@@ -32,4 +32,6 @@ C:\Users\Liam\CSE\ArduCAM>python kairos_upload.py liam.jpg Liam
 YOUR CMD_LINE PATH> python kairos_upload.py IMAGE_FILEPATH IMAGE_NAME
 ```
 
+## Recognizing Faces
+
 Once you've enrolled some images of a person's face (you can enroll multiple images of the same face to increase the likelihood of it being recognized), make sure capture_loop() is uncommented in the device code and run the code. The code will take RGB images in a loop and compare them to the previous image taken to see if something has come into frame. If it is determined that something entered the frame, a jpeg image will be taken and sent to the agent, which will pass the image on to kairos to be analyzed. If the image contains a recognized face, the agent will log the name of the recognized individual to the server.

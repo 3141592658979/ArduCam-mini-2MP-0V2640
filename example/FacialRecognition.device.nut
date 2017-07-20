@@ -26,7 +26,7 @@ function pixelDifference(buf1, buf2) {
     // consider the pixels to be different
     local diff = math.abs(buf1[0] - buf2[0]) + math.abs(buf1[1] - buf2[1]) +
     math.abs(buf1[2] - buf2[2]);
-    return (diff >30) ? 1 : 0;
+    return (diff > 30) ? 1 : 0;
 }
     
 // Keep on taking RGB pictures until two have sufficient similarity to 
@@ -50,7 +50,7 @@ function getClearPicture() {
 function enroll() {
     myCamera.set_jpeg_size(1600);
     myCamera.capture();
-    myCamera.send_buffer();
+    agent.send("enroll", myCamera.saveLocal());
 }
 
 // Keep on taking RGB pictures and consider their differences. If there is
@@ -58,7 +58,6 @@ function enroll() {
 // that something probably came into frame, so take a jpeg an analyze it
 function capture_loop() {
     if(ready) {
-        //myCamera.setRGB();
         myCamera.capture();
         img1 = myCamera.saveLocal(); 
         if(img1.len() == img2.len()) { // only compare same size images 
@@ -76,7 +75,7 @@ function capture_loop() {
                     imp.sleep(0.5);
                     myCamera.capture();
                     server.log("sending...");
-                    myCamera.send_buffer();
+                    agent.send("detect", myCamera.saveLocal());
                     
                     count = 3;
                 }
@@ -145,7 +144,3 @@ setup();
 
 agent.on("done", done);
 capture_loop();
-
-
-
-//enroll();

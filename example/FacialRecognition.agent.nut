@@ -1,19 +1,9 @@
 #require "PrettyPrinter.class.nut:1.0.1"
-#require "rocky.class.nut:2.0.0"
-#require "ArduCAM.device.nut:1.0.0"
-
-const css = @"
-body {
-    background: #35a8dd;
-    color: white;
-    font-family: ""Helvetica Neue"", ""Helvetica"",""sans"";
-}
-"
 
 // ---------------- Kairos attempt ---------------------
 
 appId <- "dbb06955";
-APP_key <- "61479b56c0aa9e0dd31762e5018f2f40";
+appKey <- "61479b56c0aa9e0dd31762e5018f2f40";
 
 galleryName <- "ElectricImp";
 
@@ -22,10 +12,9 @@ function enroll(name, gallery) {
     local headers = {
         "Content-Type" : "application/json",
         "app_id" : appId,
-        "app_key" : APP_key
+        "app_key" : appKey
     }
     local parameters = http.jsonencode({
-        // "url" : image_url,
         "image" : http.base64encode(image),
         "subject_id" : name,
         "gallery_name" : gallery
@@ -42,7 +31,7 @@ function deleteGallery(gallery) {
     local headers = {
         "Content-Type" : "application/json",
         "app_id" : appId,
-        "app_key" : APP_key
+        "app_key" : appKey
     };
     
     local url = "https://api.kairos.com/gallery/remove";
@@ -60,7 +49,7 @@ function detect(img) {
     local headers = {
         "Content-Type" : "application/json",
         "app_id" : appId,
-        "app_key" : APP_key
+        "app_key" : appKey
     };
     
     local url = "https://api.kairos.com/recognize";
@@ -107,9 +96,14 @@ function detect(img) {
     device.send("done", "");
 }
 
-agentCam <- Camera(detect);
-agentCam.init();
+device.on("detect", function(img) {
+    detect(img);
+});
+
+device.on("enroll"), function(img) {
+    enroll(img, galleryName);
+}
 
 device.on("something" function(v) {
     server.log("Something came into the frame!");
-})
+});

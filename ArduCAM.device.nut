@@ -1,8 +1,25 @@
-// Copyright (c) 2013-2016 Electric Imp
-// This file is licensed under the MIT License
-// http://opensource.org/licenses/MIT
+/***
+MIT License
+Copyright 2017 Electric Imp
+SPDX-License-Identifier: MIT
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+***/
 
-// Imp firmware for Arudcam Mini 2MP
+// Imp firmware for Arducam Mini 2MP
 // Shield is Based on OV2640 Camera Module
 // http://www.arducam.com/tag/arducam-mini/
 
@@ -135,20 +152,14 @@ class Camera {
     static SENSOR_ADDRESS       = 0x01;
     
     static CTRL0                = 0xC2; // Control Register 0
+
+    static PHOTO_TIMEOUT        = 1000; // 1000 milliseconds timeout
     
     // set by constructor
     _i2c = null;
     _spi = null;
     _cs_l = null;
-    
-    // size of data chunks to send agent. Large multiple of 8.
-    static CHUNK_SIZE = 8192;
 
-    // next chunk to send
-    chunk_next = 0;
-    
-    // number of chunks to send
-    chunk_count = 0;
     
     /**************************************************************************
      *
@@ -271,43 +282,13 @@ class Camera {
         flush_fifo();
         clear_fifo_flag();
         start_capture();
-        local startTime = time();
+        local startTime = hardware.millis();
         while (!get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK)){
-            if(time() - startTime > 20) {
-                server.log("too long");
-                break;
+            if(hardware.millis() - startTime > PHOTO_TIMEOUT) {
+                return false;
             }
-        };
-    }
-    
-    function _send_chunk() {
-        agent.send("jpeg_chunk", [chunk_next*CHUNK_SIZE, _spi.readblob(CHUNK_SIZE)]);
-
-        // All done?
-        chunk_next++;
-        if (chunk_next < chunk_count) imp.wakeup(0, _send_chunk.bindenv(this));
-        else {
-            _cs_l.write(1); 
-            agent.send("jpeg_end", 1);
         }
-    }
-
-    function send_buffer() {
-        local len = read_fifo_length();
-        chunk_count = math.ceil(len.tofloat()/CHUNK_SIZE).tointeger();
-        
-        server.log(format("%d bytes: %d chunks",len,chunk_count));
-        _cs_l.write(0);
-        set_fifo_burst();
-        _spi.readblob(1); //dummy read
-        
-        // Send header
-        agent.send("jpeg_start", len);
-        
-        // As buffer can be big, we do the sending on imp.wakeup(0) to allow
-        // incoming messages to be processed
-        chunk_next = 0;
-        imp.wakeup(0, _send_chunk.bindenv(this));
+        return true; // success!
     }
     
     function set_jpeg_size(size) {

@@ -1,5 +1,5 @@
 # ArduCAM OV2640
-This library provides driver and agent code for the ArduCAM OV2640 camera.
+This library provides driver and agent code for the ArduCAM mini 2MP / OV2640 camera.
 
 To add this library to your project, add ```#require "ArduCAM.device.nut:1.0.0"``` to the top of your device code and ```#require "ArduCAM.agent.nut:1.0.0"``` to the top of your agent code
 

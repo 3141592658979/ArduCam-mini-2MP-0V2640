@@ -1,32 +1,9 @@
 # ArduCAM OV2640
-This library provides driver and agent code for the ArduCAM mini 2MP / OV2640 camera.
+This library provides driver code for the ArduCAM mini 2MP / OV2640 camera.
 
-To add this library to your project, add ```#require "ArduCAM.device.nut:1.0.0"``` to the top of your device code and ```#require "ArduCAM.agent.nut:1.0.0"``` to the top of your agent code
+To add this library to your project, add ```#require "ArduCAM.device.nut:1.0.0"``` to the top of your device code.
 
-## Class Usage - Agent
-
-### Constructor: Camera(*cb*)
-The constructor takes a single required parameter: a callback function that is called when a jpeg image is received from the device. The callback function should be prepared to take the jpg image as its sole parameter.
-
-#### Example
-```
-agentCam <- Camera(processImage);
-```
-
-### Class Methods
-
-### init()
-The init() method must be called to initialize callback functions for receiving jpeg images. 
-
-#### Example
-```
-agentCam.init();
-```
-
-### setCallBack(cb)
-The setCallBack(cb) method changes the callback called when a jpeg is received from the device.
-
-## Class Usage - Device
+## Class Usage 
 
 ### Constructor: Camera(*spi*, *cs_l*, *i2c*)
 The constructor takes three required parameters: a pre-configured spi bus, a chip select pin for spi (it need not be pre-configured), and a pre-configured i2c bus. The spi bus, according to the camera datasheet, should have a maximum data rate of 8MHz, and the i2c bus, according to the camera datasheet, should have a data rate of 400kHz. The spi bus must have CPOL = CPHA = 0.
@@ -61,15 +38,6 @@ The capture() method takes a picture and loads it into the fifo buffer.
 #### Example
 ```
 myCamera.capture();
-```
-
-### send_buffer()
-The send_buffer() method sends the current image in the fifo buffer to the agent. The agent is only prepared to handle jpeg images, so it is necessary to ensure that the image taken was a jpeg.
-
-#### Example
-```
-myCamera.capture(); // store a picture in fifo
-myCamera.send_buffer();
 ```
 
 ### set_jpeg_size(*size*)

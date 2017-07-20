@@ -2,13 +2,14 @@
 
 // ---------------- Kairos attempt ---------------------
 
-appId <- "dbb06955";
-appKey <- "61479b56c0aa9e0dd31762e5018f2f40";
+appId <- "<YOUR APP ID>";
+appKey <- "<YOUR API KEY>";
 
 galleryName <- "ElectricImp";
+subjectName <- "<YOUR NAME>";
 
 
-function enroll(name, gallery) {
+function enroll(image, name, gallery) {
     local headers = {
         "Content-Type" : "application/json",
         "app_id" : appId,
@@ -101,7 +102,7 @@ device.on("detect", function(img) {
 });
 
 device.on("enroll"), function(img) {
-    enroll(img, galleryName);
+    enroll(img, subjectName, galleryName);
 }
 
 device.on("something" function(v) {

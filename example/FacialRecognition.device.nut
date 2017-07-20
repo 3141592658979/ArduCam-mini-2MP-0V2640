@@ -143,4 +143,7 @@ function setup() {
 setup();
 
 agent.on("done", done);
-capture_loop();
+
+capture_loop(); // Comment me out if you are enrolling a face. Uncomment me if you are recognizing faces
+
+// enroll(); // Uncomment me if you are enrolling a face. Comment me out if you are recognizing faces

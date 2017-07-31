@@ -101,9 +101,9 @@ device.on("detect", function(img) {
     detect(img);
 });
 
-device.on("enroll"), function(img) {
+device.on("enroll", function(img) {
     enroll(img, subjectName, galleryName);
-}
+});
 
 device.on("something" function(v) {
     server.log("Something came into the frame!");

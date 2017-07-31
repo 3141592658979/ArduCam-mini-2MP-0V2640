@@ -25,7 +25,7 @@ myCamera <- Camera(spi, cs_l, i2c);
 ## Class Methods
 
 ### reset()
-The reset() method resets the OV2640 registers to their default state and loads default parameter sets. By default, it sets the image mode as 320x240 JPEG.
+The *reset()* method resets the OV2640 registers to their default state and loads default parameter sets. By default, it sets the image mode as 320x240 JPEG.
 
 #### Example
 ```
@@ -33,7 +33,7 @@ myCamera.reset();
 ```
 
 ### capture()
-The capture() method takes a picture and loads it into the fifo buffer.
+The *capture()* method takes a picture and loads it into the fifo buffer.
 
 #### Example
 ```
@@ -41,7 +41,7 @@ myCamera.capture();
 ```
 
 ### set_jpeg_size(*size*)
-The set_jpeg_size(size) method will configure the camera to take a jpeg of the passed size. Supported sizes are 160x120, 176x144, 320x240, 352x288, 640x480, 800x600, 1024x768, 1280x960, and 1600x1200. You must pass the desired width. If a non-supported width is passed, by default 320x240 will be selected.
+The *set_jpeg_size(size)* method will configure the camera to take a jpeg of the passed size. Supported sizes are 160x120, 176x144, 320x240, 352x288, 640x480, 800x600, 1024x768, 1280x960, and 1600x1200. You must pass the desired width. If a non-supported width is passed, by default 320x240 will be selected.
 
 #### Example
 ```
@@ -49,7 +49,7 @@ myCamera.set_jpeg_size(800);
 ```
 
 ### setRGB()
-The setRGB() method will configure the camera to take images in the RGB565 format.
+The *setRGB()* method will configure the camera to take images in the RGB565 format.
 
 #### Example
 ```
@@ -57,7 +57,7 @@ myCamera.setRGB();
 ```
 
 ### setYUV422()
-The setYUV422() method will configure the camera to take images in the YUV422 format.
+The *setYUV422()* method will configure the camera to take images in the YUV422 format.
 
 #### Example
 ```
@@ -65,7 +65,7 @@ myCamera.setYUV422();
 ```
 
 ### saveLocal()
-The saveLocal() method will return the image in the fifo buffer. This method is used to get a copy of the image on the device.
+The *saveLocal()* method will return the image in the fifo buffer. This method is used to get a copy of the image on the device.
 
 #### Example
 ```
@@ -76,7 +76,7 @@ local img = myCamera.saveLocal();
 ```
 
 ### brighten()
-The brighten() image will brighten the image taken by the camera.
+The *brighten()* image will brighten the image taken by the camera.
 
 #### Example
 ```
@@ -84,7 +84,7 @@ myCamera.brighten();
 ```
 
 ### setExposure(*exp*)
-The setExposure(exp) method will set the exposure of the images taken by the camera. The parameter to setExposure should be a 16-bit number, with larger numbers corresponding to longer exposure times.
+The *setExposure(exp)* method will set the exposure of the images taken by the camera. The parameter to setExposure should be a 16-bit number, with larger numbers corresponding to longer exposure times.
 
 #### Example
 ```

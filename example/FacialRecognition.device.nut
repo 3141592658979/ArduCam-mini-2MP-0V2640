@@ -48,6 +48,7 @@ function getClearPicture() {
 // Call this method with the subject's name in order to take a photo of them
 // and enroll it into your gallery
 function enroll() {
+    myCamera.reset();
     myCamera.set_jpeg_size(1600);
     myCamera.capture();
     agent.send("enroll", myCamera.saveLocal());
@@ -144,6 +145,6 @@ setup();
 
 agent.on("done", done);
 
-capture_loop(); // Comment me out if you are enrolling a face. Uncomment me if you are recognizing faces
+//capture_loop(); // Comment me out if you are enrolling a face. Uncomment me if you are recognizing faces
 
-// enroll(); // Uncomment me if you are enrolling a face. Comment me out if you are recognizing faces
+enroll(); // Uncomment me if you are enrolling a face. Comment me out if you are recognizing faces

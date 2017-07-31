@@ -283,8 +283,8 @@ class Camera {
         clear_fifo_flag();
         start_capture();
         local startTime = hardware.millis();
-        while (!get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK)){
-            if(hardware.millis() - startTime > PHOTO_TIMEOUT) {
+        while (!get_bit(ARDUCHIP_TRIG, CAP_DONE_MASK)) {
+            if (hardware.millis() - startTime > PHOTO_TIMEOUT) {
                 return false;
             }
         }

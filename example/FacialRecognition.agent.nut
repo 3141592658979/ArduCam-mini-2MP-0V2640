@@ -1,13 +1,10 @@
-#require "PrettyPrinter.class.nut:1.0.1"
-
-// ---------------- Kairos attempt ---------------------
+ // ---------------- Kairos attempt ---------------------
 
 appId <- "<YOUR APP ID>";
 appKey <- "<YOUR API KEY>";
 
 galleryName <- "ElectricImp";
 subjectName <- "<YOUR NAME>";
-
 
 function enroll(image, name, gallery) {
     local headers = {
@@ -23,10 +20,7 @@ function enroll(image, name, gallery) {
     local send_url = "https://api.kairos.com/enroll";
     local request = http.post(send_url, headers, parameters);
     local response = request.sendsync();
-    local pp = PrettyPrinter();
-    server.log(pp.format(http.jsondecode(response.body)));
 }
-
 
 function deleteGallery(gallery) {
     local headers = {
@@ -41,7 +35,7 @@ function deleteGallery(gallery) {
     });
     local request = http.post(url, headers, data);
     local response = http.jsondecode(request.sendsync());
-    if("status" in response && response.status == "Complete") {
+    if ("status" in response && response.status == "Complete") {
         server.log("successfully deleted gallery");
     }
 }
@@ -64,23 +58,23 @@ function detect(img) {
     local pp = PrettyPrinter();
     server.log(pp.format(http.jsondecode(response.body)));
     local ret = http.jsondecode(response.body);
-    if("images" in ret) {
+    if ("images" in ret) {
         server.log("image found");
-        if("transaction" in ret.images[0] && ret.images[0].transaction.status == "success") {
+        if ("transaction" in ret.images[0] && ret.images[0].transaction.status == "success") {
             server.log("success");
             local myCandidates = ret.images[0].candidates;
-            if(myCandidates.len() > 0) {
+            if (myCandidates.len() > 0) {
                 local topCandidate = myCandidates[0].subject_id;
                 local maxVal = myCandidates[0].confidence;
                 
-                foreach(i in myCandidates) {
-                    if(i.confidence > maxVal) {
+                foreach (i in myCandidates) {
+                    if (i.confidence > maxVal) {
                         topCandidate = i.subject_id;   
                         maxVal = i.confidence;
                     }
                 }
                 
-                if(maxVal > 0.5) {
+                if (maxVal > 0.5) {
                     local ret = format("Hello %s",
                     topCandidate, maxVal);
                     server.log(ret);
@@ -89,11 +83,10 @@ function detect(img) {
             }
             
         }
-    }
-    else {
+    } else {
         // Uh-oh, something went wrong
     }
-    
+     
     device.send("done", "");
 }
 

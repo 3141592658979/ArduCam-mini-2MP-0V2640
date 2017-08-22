@@ -1,5 +1,7 @@
  // ---------------- Kairos attempt ---------------------
 
+#require "PrettyPrinter.class.nut:1.0.1"
+
 appId <- "<YOUR APP ID>";
 appKey <- "<YOUR API KEY>";
 
